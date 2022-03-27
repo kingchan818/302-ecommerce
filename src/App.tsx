@@ -1,26 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
+import React, { useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import HomeScreen from './screens/HomeScreen';
+import CartScreen from './screens/CartScreen';
+import TrackScreen from './screens/TrackScreen';
+import Nav from './components/Nav';
+import LoginModals from './components/Modals/LoginModals';
+import RegisterModals from './components/Modals/RegisterModals';
+import ProductScreen from './screens/ProductScreen';
+import Footer from './components/Footer';
+import CheckOutScreen from './screens/CheckOutScreen';
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [isOpen, setIsOpen] = useState(false);
+    const [toggleRegister, setToggleRegister] = useState(false);
+    return (
+        <>
+            <BrowserRouter>
+                <Nav isOpen={isOpen} setIsOpen={setIsOpen} />
+                <LoginModals
+                    isOpen={isOpen}
+                    setIsOpen={setIsOpen}
+                    setToggleRegister={setToggleRegister}
+                    toggleRegister={toggleRegister}
+                />
+                <RegisterModals
+                    toggleRegister={toggleRegister}
+                    setToggleRegister={setToggleRegister}
+                    isOpen={isOpen}
+                    setIsOpen={setIsOpen}
+                />
+                <Routes>
+                    <Route path="/*" element={<HomeScreen />} />
+                    <Route path="/cart/*" element={<CartScreen />} />
+                    <Route path="/track/*" element={<TrackScreen />} />
+                    <Route path="/products/:id" element={<ProductScreen />} />
+                    <Route path="/checkout/*" element={<CheckOutScreen />} />
+                    {/* <Route path="/" element={<HomeScreen />}> */}
+                    {/* <Route path="teams" element={<Teams />}>
+                            <Route path=":teamId" element={<Team />} />
+                            <Route path="new" element={<NewTeamForm />} />
+                        </Route> */}
+                </Routes>
+                <Footer />
+            </BrowserRouter>
+        </>
+    );
 }
 
 export default App;
