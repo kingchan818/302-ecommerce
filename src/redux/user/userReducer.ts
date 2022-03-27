@@ -1,9 +1,10 @@
 import { FETCH_USER_FAIL, FETCH_USER_SUCCESS, REGISTER_USER_FAIL, REGISTER_USER_SUCCESS } from '../constants';
+import {AppActions} from '../types/actions';
 const initalState = {
     currentUser: {},
 };
 
-export const userReducer = (state = initalState, action) => {
+export const userReducer = (state = initalState, action: AppActions) => {
     switch (action.type) {
         case FETCH_USER_SUCCESS:
             return {

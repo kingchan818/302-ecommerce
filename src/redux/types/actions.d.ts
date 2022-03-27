@@ -19,7 +19,7 @@ export interface addToCartActionAction  {
         id: number,
         name: string,
         image: string,
-        price: string,
+        price: number,
     },
 }
 
@@ -28,16 +28,18 @@ export interface deleteCartItemAction {
     payload: {
         id: number,
         name: string,
-        price: string,
+        price: number,
     },
 }
 
 // orderAction
 export interface createOrderSuccessAction {
     type: typeof ORDER_SUCCESS;
+    payload? : any
 }
 export interface createOrderFailAction {
     type: typeof ORDER_FAIL;
+    payload? : any
 }
 export interface createOrderSuccessActionWithGuestUser {
     type: typeof ORDER_SUCCESS_WITH_GUSET_USER;
@@ -85,4 +87,4 @@ export type userLoginType = fetchUserSuccessAction | fetchUserFailAction | userR
 
 
 
-export type AppActions = orderActionType | cartActionType;
+export type AppActions = orderActionType | cartActionType | userLoginType;

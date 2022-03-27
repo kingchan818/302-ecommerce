@@ -1,6 +1,15 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { RegisterModalProps } from '../../types/components/RegisterModal';
+import { userRegisterAction } from '../../redux/user/userAction';
+import { useDispatch } from 'react-redux';
 const RegisterModals: FC<RegisterModalProps> = ({ setToggleRegister, toggleRegister, setIsOpen, isOpen }) => {
+    const dispatch = useDispatch();
+    const [email, setEmail] = useState('');
+    const [first_name, setFirst_name] = useState('');
+    const [last_name, setLast_name] = useState('');
+    const [phone_num, setPhone_num] = useState('');
+    const [password, setPassword] = useState('');
+
     const closeHandler = (): void => {
         console.log('closeHandler');
         setToggleRegister(!toggleRegister);
@@ -9,6 +18,15 @@ const RegisterModals: FC<RegisterModalProps> = ({ setToggleRegister, toggleRegis
         console.log('backToLoginHandler');
         setToggleRegister(!toggleRegister);
         setIsOpen(!isOpen);
+    };
+    const submitHandler = () => {
+        const formBodyData = new FormData();
+        formBodyData.append('email', email);
+        formBodyData.append('first_name', first_name);
+        formBodyData.append('last_name', last_name);
+        formBodyData.append('phone_num', phone_num);
+        formBodyData.append('password', password);
+        dispatch(userRegisterAction(formBodyData));
     };
     return (
         <div className={`${toggleRegister === false && 'hidden'} relative mx-auto w-1/3 h-screen`}>
@@ -29,6 +47,7 @@ const RegisterModals: FC<RegisterModalProps> = ({ setToggleRegister, toggleRegis
                             id="first_name"
                             type="text"
                             placeholder="Your First Name"
+                            onChange={(e) => setFirst_name(e.target.value)}
                         />
                     </div>
                     <div className="mb-4">
@@ -38,6 +57,7 @@ const RegisterModals: FC<RegisterModalProps> = ({ setToggleRegister, toggleRegis
                             id="last_name"
                             type="text"
                             placeholder="Your Last Name"
+                            onChange={(e) => setLast_name(e.target.value)}
                         />
                     </div>
                     <div className="mb-4">
@@ -47,6 +67,7 @@ const RegisterModals: FC<RegisterModalProps> = ({ setToggleRegister, toggleRegis
                             id="phone_num"
                             type="text"
                             placeholder="Your Phone number"
+                            onChange={(e) => setPhone_num(e.target.value)}
                         />
                     </div>
                     <div className="mb-4">
@@ -56,6 +77,7 @@ const RegisterModals: FC<RegisterModalProps> = ({ setToggleRegister, toggleRegis
                             id="email"
                             type="text"
                             placeholder="Email Address"
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
                     <div className="mb-6">
@@ -65,11 +87,16 @@ const RegisterModals: FC<RegisterModalProps> = ({ setToggleRegister, toggleRegis
                             id="password"
                             type="password"
                             placeholder="Password"
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
                     <div className="block md:flex items-center justify-between">
                         <div>
-                            <button className="text-white font-bold py-2 px-4 rounded bg-black" type="button">
+                            <button
+                                className="text-white font-bold py-2 px-4 rounded bg-black"
+                                type="button"
+                                onClick={submitHandler}
+                            >
                                 Register
                             </button>
                         </div>

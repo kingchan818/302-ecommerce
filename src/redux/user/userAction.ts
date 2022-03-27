@@ -1,7 +1,10 @@
 import axios from 'axios';
+import { Dispatch } from 'redux';
+import {AppActions} from '../types/actions';
+import {AppState} from '../index'
 import { FETCH_USER_SUCCESS, FETCH_USER_FAIL, REGISTER_USER_SUCCESS, REGISTER_USER_FAIL } from '../constants';
-import jwt from 'jsonwebtoken';
-export const userLoginAction = (bodyFormData) => async (dispatch, getState) => {
+import jwt from 'jwt-decode';
+export const userLoginAction = (bodyFormData: FormData) => async (dispatch : Dispatch<AppActions> , getState:() => AppState )  => {
     try {
         const { headers } = await axios({
             method: 'POST',
@@ -9,16 +12,17 @@ export const userLoginAction = (bodyFormData) => async (dispatch, getState) => {
             data: bodyFormData,
         });
         const userToken = headers['authorization'];
-        let user = jwt.decode(userToken, { complete: true });
+        let user = jwt(userToken) as any;
+        console.log(user)
+        const _user = { ...(user?.sub as object ), userToken };
+        console.log(_user);
+            dispatch({
+                type: FETCH_USER_SUCCESS,
+                payload: _user,
+            });
 
-        user = { ...user.payload.sub, userToken: userToken };
-        dispatch({
-            type: FETCH_USER_SUCCESS,
-            payload: user,
-        });
-
-        localStorage.setItem('userdata', JSON.stringify(user));
-    } catch (e) {
+        localStorage.setItem('userdata', JSON.stringify(_user));
+    } catch (e : any) {
         dispatch({
             type: FETCH_USER_FAIL,
             payload: e.message,
@@ -26,7 +30,7 @@ export const userLoginAction = (bodyFormData) => async (dispatch, getState) => {
     }
 };
 
-export const userRegisterAction = (bodyFormData) => async (dispatch, getState) => {
+export const userRegisterAction = (bodyFormData: FormData) => async (dispatch : Dispatch<AppActions>, getState : ()=> AppState) => {
     try {
         const { data } = await axios({
             method: 'POST',
@@ -39,7 +43,7 @@ export const userRegisterAction = (bodyFormData) => async (dispatch, getState) =
             payload: data,
         });
         localStorage.setItem('userdata', JSON.parse(data));
-    } catch (e) {
+    } catch (e : any) {
         dispatch({
             type: REGISTER_USER_FAIL,
             payload: e.message,

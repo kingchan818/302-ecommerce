@@ -1,7 +1,12 @@
-import React, { FC } from 'react';
+import React, { FC, useState, ChangeEvent, MouseEventHandler } from 'react';
 import { LoginModalProps } from '../../types/components/LoginModal';
-
+import { userLoginAction } from '../../redux/user/userAction';
+import { useDispatch } from 'react-redux';
 const LoginModals: FC<LoginModalProps> = ({ isOpen, setIsOpen, setToggleRegister, toggleRegister }) => {
+    const dispatch = useDispatch();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
     const closeHandler = (): void => {
         console.log('closeHandler');
         setIsOpen(!isOpen);
@@ -11,6 +16,14 @@ const LoginModals: FC<LoginModalProps> = ({ isOpen, setIsOpen, setToggleRegister
         setToggleRegister(!toggleRegister);
         setIsOpen(!isOpen);
     };
+
+    const submitHandler = () => {
+        const formBodyData = new FormData();
+        formBodyData.append('email', email);
+        formBodyData.append('password', password);
+        dispatch(userLoginAction(formBodyData));
+    };
+
     return (
         //mx-6 md:mx-auto w-[100%] h-full md:w-1/2 lg:w-1/3 z-20 m-8
         <div className={`${isOpen === false && 'hidden'} relative mx-auto w-1/3 h-screen`}>
@@ -31,6 +44,7 @@ const LoginModals: FC<LoginModalProps> = ({ isOpen, setIsOpen, setToggleRegister
                             id="email"
                             type="text"
                             placeholder="Email Address"
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
                     <div className="mb-6">
@@ -40,11 +54,16 @@ const LoginModals: FC<LoginModalProps> = ({ isOpen, setIsOpen, setToggleRegister
                             id="password"
                             type="password"
                             placeholder="Password"
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
                     <div className="block md:flex items-center justify-between">
                         <div>
-                            <button className="text-white font-bold py-2 px-4 rounded bg-black" type="button">
+                            <button
+                                className="text-white font-bold py-2 px-4 rounded bg-black"
+                                type="button"
+                                onClick={() => submitHandler()}
+                            >
                                 Sign In
                             </button>
                         </div>

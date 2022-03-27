@@ -1,17 +1,18 @@
 import { ADD_TO_CART_ITEM, DELETE_CART_ITEM } from '../constants';
+import { AppActions } from '../types/actions'
 const initalState = {
-    cartItems: [],
+    cartItems : [] as object[]
 };
 
-export const cartReducer = (state = initalState, action) => {
+export const cartReducer = (state = initalState, action: AppActions) => {
     switch (action.type) {
         case ADD_TO_CART_ITEM:
             const item = action.payload;
             //TODO change the name to id
-            const existItem = state.cartItems.find((x) => x.id === item.id);
+            const existItem = state.cartItems.find((x : any) => x.id === item.id);
             if (existItem) {
                 return {
-                    cartItems: [...state.cartItems.map((x) => (x.id === item.id ? { ...x, qty: x.qty + 1 } : x))],
+                    cartItems: [...state.cartItems.map((x : any) => (x.id === item.id ? { ...x, qty: x.qty + 1 } : x))],
                     status: 'info',
                     message: 'item added',
                 };
@@ -25,17 +26,17 @@ export const cartReducer = (state = initalState, action) => {
         case DELETE_CART_ITEM:
             const __item = action.payload;
             //TODO change the id to id
-            const _existItem = state.cartItems.find((x) => x.id === __item.id);
-            if (_existItem.qty > 1) {
+            const _existItem = state.cartItems.find((x:any) => x.id === __item.id) as any;
+            if (_existItem?.qty > 1) {
                 return {
-                    cartItems: [...state.cartItems.map((x) => (x.id === __item.id ? { ...x, qty: x.qty - 1 } : x))],
+                    cartItems: [...state.cartItems.map((x : any) => (x.id === __item.id ? { ...x, qty: x.qty - 1 } : x))],
                     status: 'info',
                     message: 'item deleted',
                 };
             } else {
                 return {
                     cartItems: [
-                        ...state.cartItems.filter((value, index) => {
+                        ...state.cartItems.filter((value : any, index) => {
                             return !(value.id === __item.id);
                         }),
                     ],

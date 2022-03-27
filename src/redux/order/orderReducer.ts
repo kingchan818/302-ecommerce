@@ -5,8 +5,8 @@ import {
     ORDER_FETCH_FAIL,
     ORDER_FETCH_SUCCESS,
 } from '../constants';
-
-const orderReducer = (state = { order: {} }, action) => {
+import { AppActions } from '../types/actions';
+const orderReducer = (state = { order: {} }, action : AppActions) => {
     switch (action.type) {
         case ORDER_SUCCESS:
             return {
