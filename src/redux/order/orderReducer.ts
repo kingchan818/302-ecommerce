@@ -6,7 +6,24 @@ import {
     ORDER_FETCH_SUCCESS,
 } from '../constants';
 import { AppActions } from '../types/actions';
-const orderReducer = (state = { order: {} }, action : AppActions) => {
+
+const initalState = { 
+    order: {
+        data : {
+            arrivedTimeStamp : '',
+            creationTimeStamp : '',
+            currentLocation : '',
+            id : '',
+            logisticVender : '',
+            status : ''
+        }
+    },
+    detial: {}, 
+    status: '',
+    error: '' 
+};
+
+const orderReducer = (state = initalState, action : AppActions) => {
     switch (action.type) {
         case ORDER_SUCCESS:
             return {

@@ -9,7 +9,8 @@ import {
     FETCH_USER_SUCCESS,
     FETCH_USER_FAIL,
     REGISTER_USER_SUCCESS,
-    REGISTER_USER_FAIL
+    REGISTER_USER_FAIL,
+    FETCH_LOCATION
 } from '../constants';
 
 // CartActions
@@ -51,7 +52,16 @@ export interface createOrderFailActionWithGuestUser {
 }
 export interface fetchOrderSuccessAction {
     type : typeof ORDER_FETCH_SUCCESS;
-    payload : any;
+    payload : {
+        data : {
+            arrivedTimeStamp : string,
+            creationTimeStamp : string,
+            currentLocation : string,
+            id : string,
+            logisticVender : string,
+            status : string
+        }
+    };
 }
 export interface fetchOrderFailAction {
     type : typeof ORDER_FETCH_FAIL;
@@ -78,13 +88,38 @@ export interface userRegisterFailAction {
     payload : string;
 }
 
+// map Action
+export interface Location {
+    address_components : any[],
+    formatted_address : string,
+    geometry : {
+        location : {
+            lat : number,
+            lng : number,
+        }
+    },
+}
+
+
+export interface mapSuccessAction {
+    type : typeof FETCH_LOCATION_SUCCESS;
+    payload : {
+        results: Location[],
+        status : string,
+    };
+}
+export interface mapFailAction {
+    type : typeof FETCH_LOCATION_FAIL;
+    payload : string | any;
+}
+
 
 
 
 export type orderActionType = createOrderSuccessAction | createOrderFailAction | createOrderSuccessActionWithGuestUser | createOrderFailActionWithGuestUser | fetchOrderSuccessAction | fetchOrderFailAction;
 export type cartActionType = addToCartActionAction | deleteCartItemAction;
 export type userLoginType = fetchUserSuccessAction | fetchUserFailAction | userReisterSuccessAction | userRegisterFailAction;
+export type mapActionType = mapSuccessAction | mapFailAction
 
 
-
-export type AppActions = orderActionType | cartActionType | userLoginType;
+export type AppActions = orderActionType | cartActionType | userLoginType | mapActionType;

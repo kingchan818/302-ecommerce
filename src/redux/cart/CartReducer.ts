@@ -1,7 +1,10 @@
 import { ADD_TO_CART_ITEM, DELETE_CART_ITEM } from '../constants';
 import { AppActions } from '../types/actions'
+
 const initalState = {
-    cartItems : [] as object[]
+    cartItems : [] as object[],
+    status : '',
+    message : '',
 };
 
 export const cartReducer = (state = initalState, action: AppActions) => {
@@ -13,13 +16,13 @@ export const cartReducer = (state = initalState, action: AppActions) => {
             if (existItem) {
                 return {
                     cartItems: [...state.cartItems.map((x : any) => (x.id === item.id ? { ...x, qty: x.qty + 1 } : x))],
-                    status: 'info',
+                    status: 'success',
                     message: 'item added',
                 };
             } else {
                 return {
                     cartItems: [...state.cartItems, { ...action.payload, qty: 1 }],
-                    status: 'info',
+                    status: 'success',
                     message: 'item added',
                 };
             }
@@ -30,7 +33,7 @@ export const cartReducer = (state = initalState, action: AppActions) => {
             if (_existItem?.qty > 1) {
                 return {
                     cartItems: [...state.cartItems.map((x : any) => (x.id === __item.id ? { ...x, qty: x.qty - 1 } : x))],
-                    status: 'info',
+                    status: 'success',
                     message: 'item deleted',
                 };
             } else {
@@ -40,7 +43,7 @@ export const cartReducer = (state = initalState, action: AppActions) => {
                             return !(value.id === __item.id);
                         }),
                     ],
-                    status: 'info',
+                    status: 'success',
                     message: 'item deleted',
                 };
             }

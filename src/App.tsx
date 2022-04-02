@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
 import CartScreen from './screens/CartScreen';
@@ -9,9 +9,13 @@ import RegisterModals from './components/Modals/RegisterModals';
 import ProductScreen from './screens/ProductScreen';
 import Footer from './components/Footer';
 import CheckOutScreen from './screens/CheckOutScreen';
+import { DecidedNode } from './components/ToastNotification/DecidedNode';
+import { Danger } from './components/ToastNotification/Danger';
+import { Warning } from './components/ToastNotification/Warning';
 function App() {
     const [isOpen, setIsOpen] = useState(false);
     const [toggleRegister, setToggleRegister] = useState(false);
+
     return (
         <>
             <BrowserRouter>
