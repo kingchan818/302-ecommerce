@@ -1,3 +1,5 @@
+# Define your gcp map api key (REACT_APP_JS_MAP_API_KEY,REACT_APP_GEO_LOCATION_API_KEY) in .env file
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
